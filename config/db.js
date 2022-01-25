@@ -15,5 +15,9 @@ db.on("error" , function(){console.log("connection error")})
 db.once("open",function(){
 
     console.log("connected sucessfully")
+    mongoose.connection.db.listCollections().toArray(function (err, names) {
+        console.log(names); // [{ name: 'dbname.myCollection' }]
+
+    });
 })
 }
