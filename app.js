@@ -3,7 +3,7 @@ require('dotenv').config()
 const express  = require('express')
 const app = express()
 const mongoose = require('mongoose')
-var test = ""
+var collectionName = ""
 
 connect = ()=>{mongoose.connect(process.env.MONGO_URI,
 
@@ -20,24 +20,24 @@ db.once("open",function(){
 
     console.log("connected sucessfully")
     mongoose.connection.db.listCollections().toArray(function (err, names) {
-      //  console.log(names); // [{ name: 'dbname.myCollection' }]
+     console.log(names); // [{ name: 'dbname.myCollection' }]
     
     const names2  = names[0].name
     console.log(" from main file "+names2)
      
-    test = names2
+    collectionName = names2
 
     });
 })
 }
 
+connect()
 
- connect()
 const port  = process.env.PORT || 3000
 
 app.get('/',(req,res)=>{
 
-res.send("hi from heroku connected to db with collections " +test )
+res.send("hi from heroku connected to db with collections " + collectionName )
 
 })
 
