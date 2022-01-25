@@ -1,17 +1,46 @@
+
+require('dotenv').config()
 const express  = require('express')
-const {connect} = require('./config/db')
-
 const app = express()
+const mongoose = require('mongoose')
+var test = ""
 
+connect = ()=>{mongoose.connect(process.env.MONGO_URI,
+
+    {
+
+useNewUrlParser : true,
+useUnifiedTopology : true
+
+})
+
+const db = mongoose.connection
+db.on("error" , function(){console.log("connection error")})
+db.once("open",function(){
+
+    console.log("connected sucessfully")
+    mongoose.connection.db.listCollections().toArray(function (err, names) {
+      //  console.log(names); // [{ name: 'dbname.myCollection' }]
+    
+    const names2  = names[0].name
+    console.log(" from main file "+names2)
+     
+    test = names2
+
+    });
+})
+}
+
+
+ connect()
 const port  = process.env.PORT || 3000
-
-connect()
 
 app.get('/',(req,res)=>{
 
-res.send("hi from heroku")
+res.send("hi from heroku connected to db with collections " +test )
 
 })
+
 
 app.listen(port,()=>{
 
